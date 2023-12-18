@@ -2,19 +2,26 @@ module fetch_pipe #(
   parameter DWIDTH = 32,
   parameter MEM_SIZE = 16384
 )(
+  // Global Clock and Reset
   input   logic         Clk_Core,
   input   logic         Rst_Core_N,
-  input   logic         PC_Sel,
-  input   logic         Run,
-  input   logic [31:0]  Program_Count_Imm,
-  output  logic [31:0]  Program_Count_Plus,
-  output  logic [31:0]  Program_Count,
-  output  logic [31:0]  Instruction
+  // Interface with Control Unit
+  input   logic         pc_sel_fi,
+  // Interface with Execution Unit
+  input   logic         flush_fi,
+  input   logic [31:0]  pc_imm_fi,
+  // Interface with Decode Unit
+  input   logic         stall_fi,
+  output  logic [31:0]  pc_plus_fo,
+  output  logic [31:0]  pc_fo,
+  output  logic [31:0]  instruct_fo
 );
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////   Parameters   ////////////////////////
 ////////////////////////////////////////////////////////////////
+
+localparam INSTR_NOP = 32'h0000_0013;
 
 ////////////////////////////////////////////////////////////////
 ///////////////////////   Internal Net   ///////////////////////
@@ -45,10 +52,11 @@ program_counter_top #(
 program_counter (
   .Clk_Core(Clk_Core),
   .Rst_Core_N(Rst_Core_N),
-  .PC_Sel(PC_Sel),
-  .Run(Run),
-  .Program_Count_Imm(Program_Count_Imm),
-  .Program_Count_Off(Program_Count_Plus),
+  .PC_Sel(pc_sel_fi),
+  .Stall(stall_fi),
+  .Flush(flush_fi),
+  .Program_Count_Imm(pc_imm_fi),
+  .Program_Count_Off(program_count_plus_c),
   .Program_Count(program_count_c)
 );
 
@@ -59,19 +67,46 @@ program_counter (
 // Register Outputs for Pipelining
 always_ff @(posedge Clk_Core or negedge Rst_Core_N) begin
   if (~Rst_Core_N) begin
-    Program_Count       <= '0;
-    Program_Count_Plus  <= '0;
-    Instruction         <= '0;
+    pc_fo         <= '0;
+    pc_plus_fo    <= '0;
+    instruct_fo   <= '0;
   end
   else begin
-    Program_Count       <= program_count_c;
-    Program_Count_Plus  <= program_count_plus_c;
-    Instruction         <= instruction_c;
+    if (Stall) begin
+      pc_fo         <= pc_fo;
+      pc_plus_fo    <= pc_plus_fo;
+      instruct_fo   <= instruct_fo;
+    end
+    else if (Flush) begin
+      instruct_fo   <= INSTR_NOP;
+      pc_fo         <= program_count_c;
+      pc_plus_fo    <= program_count_plus_c;
+    end
+    else begin
+      pc_fo         <= program_count_c;
+      pc_plus_fo    <= program_count_plus_c;
+      instruct_fo   <= instruction_c;
+    end
   end
 end
 
 ////////////////////////////////////////////////////////////////
 //////////////////   Instantiation Template   //////////////////
 ////////////////////////////////////////////////////////////////
+/*
+fetch_pipe fetch #(
+  .DWIDTH(),
+  .MEM_SIZE()
+)(
+  .Clk_Core(),
+  .Rst_Core_N(),
+  .pc_sel_fi(),
+  .run_fi(),
+  .pc_imm_fi(),
+  .pc_plus_fo(),
+  .pc_fo(),
+  .instruct_fo()
+);
+*/
 
 endmodule

@@ -21,11 +21,12 @@
 module program_counter #(
   parameter DWIDTH = 32
 )(
-  input  logic              Clk_Core,				      // Core Clock
-  input  logic              Rst_Core_N,				    // Core Clock Reset
-  input  logic              Run,
-  input  logic [DWIDTH-1:0] Program_Count_New,		// Next Program Count
-  output logic [DWIDTH-1:0] Program_Count			    // Current Program Count
+  input   logic               Clk_Core,				      // Core Clock
+  input   logic               Rst_Core_N,				    // Core Clock Reset
+  input   logic               Stall,                // Stall from Decode Unit
+  input   logic               Flush,                // Flush from execution unit
+  input   logic [DWIDTH-1:0]  Program_Count_New,		// Next Program Count
+  output  logic [DWIDTH-1:0]  Program_Count			    // Current Program Count
 );
 
 ////////////////////////////////////////////////////////////////
@@ -41,11 +42,14 @@ always@(posedge Clk_Core) begin
   if (~Rst_Core_N) begin
     Program_Count <= '0;	              // Reset PC on reset
   end else begin
-    if (Run) begin
-        Program_Count <= Program_Count_New;
+    if (Stall) begin
+      Program_Count <= Program_Count;
+    end
+    else if (Flush) begin
+      Program_Count <= Program_Count_New;	// Set new PC
     end
     else begin
-        Program_Count <= Program_Count;	// Set new PC
+      Program_Count <= Program_Count_New;
     end
   //end
 end

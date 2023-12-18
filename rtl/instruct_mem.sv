@@ -48,6 +48,7 @@ initial begin
   for (i=0; i<MEM_SIZE; i++) begin //Fill Instruct with 0 before writing from file
     instr_mem[i] = '0;
   end
+  /*
   instr_mem[0] = 32'h00c00513;
   instr_mem[1] = 32'h00c000ef;
   instr_mem[2] = 32'h00a02023;
@@ -67,7 +68,8 @@ initial begin
   instr_mem[16] = 32'h00810113;
   instr_mem[17] = 32'h02550533;
   instr_mem[18] = 32'h00008067;
-  //$readmemh("../../../../../../project/mem_files/instruct_file_3.txt", instr_mem); //read hex from instruct file
+  */
+  $readmemh("../../../../../../project/mem_files/instruct_file_3.txt", instr_mem); //read hex from instruct file
 end
 
 ////////////////////////////////////////////////////////////////
