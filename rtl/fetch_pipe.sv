@@ -36,7 +36,7 @@ logic [DWIDTH-1:0]  instruction_c;
 ////////////////////////////////////////////////////////////////
 
 instruct_mem #(
-  .DWIDTH(DWIDTH)
+  .DWIDTH(DWIDTH),
   .MEM_SIZE(MEM_SIZE)
 )
 instruct_mem (
@@ -72,12 +72,12 @@ always_ff @(posedge Clk_Core or negedge Rst_Core_N) begin
     instruct_fo   <= '0;
   end
   else begin
-    if (Stall) begin
+    if (stall_fi) begin
       pc_fo         <= pc_fo;
       pc_plus_fo    <= pc_plus_fo;
       instruct_fo   <= instruct_fo;
     end
-    else if (Flush) begin
+    else if (flush_fi) begin
       instruct_fo   <= INSTR_NOP;
       pc_fo         <= program_count_c;
       pc_plus_fo    <= program_count_plus_c;

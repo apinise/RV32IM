@@ -51,7 +51,7 @@ always@(posedge Clk_Core) begin
     else begin
       Program_Count <= Program_Count_New;
     end
-  //end
+  end
 end
 
 ////////////////////////////////////////////////////////////////

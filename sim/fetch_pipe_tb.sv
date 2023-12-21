@@ -21,6 +21,8 @@ logic [31:0]  pc_plus;
 logic [31:0]  pc;
 logic [31:0]  instruct;
 
+integer       fvectors, r;
+
 ////////////////////////////////////////////////////////////////
 //////////////////////   Instantiations   //////////////////////
 ////////////////////////////////////////////////////////////////
@@ -43,5 +45,42 @@ fetch_pipe fetch #(
 ////////////////////////////////////////////////////////////////
 ///////////////////////   Module Logic   ///////////////////////
 ////////////////////////////////////////////////////////////////
+
+initial begin
+  // Open Test File
+  fvectors = $fopen("../refV/fetch_pipe.txt", "r");
+  if (fvectors == 0) begin
+     $display("Could not open ../refV/fetch_pipe.txt");
+     $finish;
+  end
+  
+  clk     <= '0;
+  rst_n   <= '1;
+  pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;
+  
+  @(posedge clk);
+  @(posedge clk);
+  
+  rst_n   <= '0;
+  
+  @(posedge clk);
+  @(posedge clk);
+  
+  rst_n   <= '1;
+  
+	while (!$feof(fvectors)) begin
+     
+  end
+  
+	$fclose(fvectors);
+  
+end
+
+always begin 
+	#5 clk <= ~clk;
+end
 
 endmodule
