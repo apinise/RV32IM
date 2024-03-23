@@ -59,11 +59,13 @@ dut (
 
 initial begin
   // Open Test File
+  /*
   fvectors = $fopen("../refV/fetch_pipe.txt", "r");
   if (fvectors == 0) begin
      $display("Could not open ../refV/fetch_pipe.txt");
      $finish;
   end
+  */
   
   clk     <= '0;
   rst_n   <= '1;
@@ -92,12 +94,111 @@ initial begin
   
   rst_n   <= '1;
   
+  /*
 	while (!$feof(fvectors)) begin
     r = $fscanf(fvectors,"%d %d %d %h %h %h %h\n", pc_sel, stall, flush, pc_imm, chkInst, chkPC, chkPCplus);
     @(posedge clk);
   end
   
 	$fclose(fvectors);
+    */
+    
+  pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+
+  pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '1;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= 32'h00000010;   
+  @(posedge clk);
+ 
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '1;
+  pc_imm  <= '0;   
+  @(posedge clk);
+
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '1;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+      pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '1;
+  pc_imm  <= '0;   
+  @(posedge clk);
+  
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk); 
+  
+      pc_sel  <= '1;
+  flush   <= '1;
+  stall   <= '0;
+  pc_imm  <= 32'h00000034;   
+  @(posedge clk);
+ 
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk); 
+
+    pc_sel  <= '0;
+  flush   <= '0;
+  stall   <= '0;
+  pc_imm  <= '0;   
+  @(posedge clk); 
+
   $finish;
 end
 

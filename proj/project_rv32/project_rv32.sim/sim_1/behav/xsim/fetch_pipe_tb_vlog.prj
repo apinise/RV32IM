@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  \
+"../../../../project_rv32.srcs/sources_1/imports/rtl/program_counter_add.sv" \
+"../../../../project_rv32.srcs/sources_1/imports/rtl/program_counter_top.sv" \
+"../../../../project_rv32.srcs/sources_1/imports/rtl/fetch_pipe.sv" \
+"../../../../project_rv32.srcs/sources_1/imports/rtl/instruct_mem.sv" \
+"../../../../project_rv32.srcs/sources_1/imports/rtl/mux2to1.sv" \
+"../../../../project_rv32.srcs/sim_1/imports/sim/fetch_pipe_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

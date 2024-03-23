@@ -1,4 +1,4 @@
-module fetch_pipe #(
+module fetch_cycle #(
   parameter DWIDTH = 32,
   parameter MEM_SIZE = 16384
 )(
