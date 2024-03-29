@@ -42,7 +42,7 @@ localparam ADDR_SIZE = $clog2(MEM_SIZE);	// Create Address size
 ///////////////////////   Internal Net   ///////////////////////
 ////////////////////////////////////////////////////////////////
 
-logic [DWIDTH-1:0]    data_mem [MEM_SIZE-1:0];	// Create BRAM
+logic [DWIDTH-1:0]    data_mem [MEM_SIZE-1:0]; 	// Create BRAM (* dont_touch = "true" *) 
 logic [ADDR_SIZE-1:0] mem_address;				      // Create MEM address
 
 genvar  i;
